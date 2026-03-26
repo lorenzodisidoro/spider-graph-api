@@ -11,7 +11,7 @@ WORKDIR /app
 
 RUN groupadd --system spring && useradd --system --gid spring spring
 
-COPY --from=build /workspace/target/spider-graph-api-1.0-SNAPSHOT.jar app.jar
+COPY --from=build /workspace/target/spider-graph-api-1.0.0.jar app.jar
 
 ENV SPRING_PROFILES_ACTIVE=prod
 ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=70 -XX:InitialRAMPercentage=30"

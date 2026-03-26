@@ -153,6 +153,7 @@ components:
         text:
           type: string
           nullable: true
+          description: Raw HTML of the crawled page. Falls back to extracted text if the HTML cannot be re-fetched.
         outgoingUrls:
           type: array
           items:
