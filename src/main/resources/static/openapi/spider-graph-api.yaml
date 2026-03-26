@@ -1,0 +1,172 @@
+openapi: 3.0.3
+info:
+  title: Spider Graph API
+  version: 1.0.0
+  description: Spring REST API exposing the capabilities of spider-graph-lib.
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: Crawls
+paths:
+  /api/crawls/sync:
+    post:
+      tags:
+        - Crawls
+      operationId: crawlSync
+      summary: Executes a synchronous crawl
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrawlRequest'
+      responses:
+        '200':
+          description: Crawl completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrawlResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Service temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/crawls/async:
+    post:
+      tags:
+        - Crawls
+      operationId: crawlAsync
+      summary: Executes an asynchronous crawl
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrawlRequest'
+      responses:
+        '200':
+          description: Crawl completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrawlResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Service temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    CrawlRequest:
+      type: object
+      required:
+        - startUrl
+      properties:
+        startUrl:
+          type: string
+          format: uri
+          description: Absolute URL used as the crawl starting point
+        maxDepth:
+          type: integer
+          minimum: 0
+          default: 2
+        timeout:
+          type: integer
+          minimum: 1
+          default: 5000
+        requestDelay:
+          type: integer
+          minimum: 0
+          default: 0
+        userAgent:
+          type: string
+          default: SpiderGraphApi/1.0
+        verifyHost:
+          type: boolean
+          default: true
+        urlPrefix:
+          type: string
+          format: uri
+          nullable: true
+    CrawlResponse:
+      type: object
+      required:
+        - mode
+        - startUrl
+        - nodeCount
+        - nodes
+      properties:
+        mode:
+          type: string
+          enum:
+            - sync
+            - async
+        startUrl:
+          type: string
+          format: uri
+        nodeCount:
+          type: integer
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PageNodeResponse'
+    PageNodeResponse:
+      type: object
+      required:
+        - url
+        - outgoingUrls
+        - incomingUrls
+      properties:
+        url:
+          type: string
+          format: uri
+        title:
+          type: string
+          nullable: true
+        text:
+          type: string
+          nullable: true
+        outgoingUrls:
+          type: array
+          items:
+            type: string
+            format: uri
+        incomingUrls:
+          type: array
+          items:
+            type: string
+            format: uri
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string

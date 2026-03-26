@@ -1,0 +1,79 @@
+{
+  "info": {
+    "_postman_id": "cde9f4d0-4c93-45fd-ae48-9d5d2f7f0ef1",
+    "name": "Spider Graph API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection for the Spider Graph API."
+  },
+  "item": [
+    {
+      "name": "Crawls",
+      "item": [
+        {
+          "name": "Sync Crawl",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"startUrl\": \"https://www.geeksforgeeks.org/advance-java/advanced-java/\",\n  \"maxDepth\": 1,\n  \"timeout\": 5000,\n  \"requestDelay\": 250,\n  \"userAgent\": \"SpiderGraphApi/1.0\",\n  \"verifyHost\": true,\n  \"urlPrefix\": \"https://www.geeksforgeeks.org/advance-java/\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/crawls/sync",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "crawls",
+                "sync"
+              ]
+            },
+            "description": "Executes a synchronous crawl."
+          },
+          "response": []
+        },
+        {
+          "name": "Async Crawl",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"startUrl\": \"https://www.geeksforgeeks.org/advance-java/advanced-java/\",\n  \"maxDepth\": 1,\n  \"timeout\": 5000,\n  \"requestDelay\": 250,\n  \"userAgent\": \"SpiderGraphApi/1.0\",\n  \"verifyHost\": true,\n  \"urlPrefix\": \"https://www.geeksforgeeks.org/advance-java/\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/crawls/async",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "crawls",
+                "async"
+              ]
+            },
+            "description": "Executes an asynchronous crawl."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ]
+}
