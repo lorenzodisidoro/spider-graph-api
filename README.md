@@ -43,10 +43,12 @@ docker build -t spider-graph-api:latest .
 
 ```bash
 export SPRING_PROFILES_ACTIVE=prod
+export JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=70 -XX:InitialRAMPercentage=30"
 export APP_SECURITY_CORS_ALLOWED_ORIGINS=https://app.example.com
 
 docker run --rm -p 8080:8080 \
   -e SPRING_PROFILES_ACTIVE \
+  -e JAVA_TOOL_OPTIONS \
   -e APP_SECURITY_CORS_ALLOWED_ORIGINS \
   spider-graph-api:latest
 ```
@@ -55,6 +57,7 @@ docker run --rm -p 8080:8080 \
 
 ```bash
 export SPRING_PROFILES_ACTIVE=prod
+export JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=70 -XX:InitialRAMPercentage=30"
 export APP_SECURITY_CORS_ALLOWED_ORIGINS=https://app.example.com
 
 docker compose up --build
@@ -64,6 +67,7 @@ You can also export all main variables before startup:
 
 ```bash
 export SPRING_PROFILES_ACTIVE=prod
+export JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=70 -XX:InitialRAMPercentage=30"
 export APP_SECURITY_CORS_ALLOWED_ORIGINS=https://app.example.com
 export APP_SECURITY_RATE_LIMIT_MAX_REQUESTS_PER_MINUTE=10
 export APP_SECURITY_CRAWL_MAX_CONCURRENT_REQUESTS=1
@@ -80,6 +84,7 @@ The main properties can be configured through environment variables:
 | Spring Property | Environment Variable | Default |
 | --- | --- | --- |
 | `spring.profiles.active` | `SPRING_PROFILES_ACTIVE` | `dev` |
+| JVM container sizing | `JAVA_TOOL_OPTIONS` | `-XX:MaxRAMPercentage=70 -XX:InitialRAMPercentage=30` |
 | `app.security.cors.allowed-origins` | `APP_SECURITY_CORS_ALLOWED_ORIGINS` | `http://localhost:3000,http://127.0.0.1:3000` in `dev` |
 | `app.security.rate-limit.max-requests-per-minute` | `APP_SECURITY_RATE_LIMIT_MAX_REQUESTS_PER_MINUTE` | `10` |
 | `app.security.crawl.max-concurrent-requests` | `APP_SECURITY_CRAWL_MAX_CONCURRENT_REQUESTS` | `1` |
