@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jspecify.annotations.NonNull;
 import org.narae.api.ErrorResponse;
 import org.narae.config.ApiSecurityProperties;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         String clientKey = resolveClientKey(request);
         int maxRequests = properties.getRateLimit().getMaxRequestsPerMinute();

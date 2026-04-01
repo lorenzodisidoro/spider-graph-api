@@ -142,3 +142,7 @@ mvn test
 - the container exposes port `8080`
 - the process runs as a non-root user
 - the Docker build requires network access to download Maven dependencies and the JitPack dependency `spider-graph-lib`
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).

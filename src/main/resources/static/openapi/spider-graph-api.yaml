@@ -153,7 +153,11 @@ components:
         text:
           type: string
           nullable: true
-          description: Raw HTML of the crawled page. Falls back to extracted text if the HTML cannot be re-fetched.
+          description: Base64 of the page content compressed with GZIP.
+        html:
+          type: string
+          nullable: true
+          description: Base64 of the HTML page compressed with GZIP.
         outgoingUrls:
           type: array
           items:

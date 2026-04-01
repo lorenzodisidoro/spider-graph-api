@@ -11,13 +11,14 @@ import org.narae.generated.model.PageNodeResponse;
 import org.narae.config.ApiSecurityProperties;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URI;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.concurrent.Semaphore;
+import java.util.zip.GZIPOutputStream;
 
 @Service
 public class SpiderGraphService {
@@ -123,10 +124,29 @@ public class SpiderGraphService {
         PageNodeResponse response = new PageNodeResponse();
         response.setUrl(URI.create(node.getUrl()));
         response.setTitle(node.getTitle());
-        response.setText(node.getText());
+        response.setText(compress(node.getText()));
+        response.setHtml(compress(node.getHtml()));
         response.setOutgoingUrls(node.getOutgoing().stream().map(PageNode::getUrl).sorted().map(URI::create).toList());
         response.setIncomingUrls(node.getIncoming().stream().map(PageNode::getUrl).sorted().map(URI::create).toList());
         return response;
+    }
+
+    /**
+     * Compresses the string using GZIP and encodes it in Base64
+     */
+    private static String compress(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        try (GZIPOutputStream gzip = new GZIPOutputStream(byteStream)) {
+            gzip.write(str.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Base64.getEncoder().encodeToString(byteStream.toByteArray());
     }
 
     private String normalizeOptionalUrl(String value, String fieldName) {
